@@ -1,0 +1,784 @@
+﻿<!DOCTYPE html>
+<html class="theme theme-white">
+<head>
+<meta charset="utf-8">
+<title>blog项目数据字典</title>
+<link href="https://www.zybuluo.com/static/assets/template-theme-white.css" rel="stylesheet" media="screen">
+<style type="text/css">
+
+#wmd-preview h1  {
+    color: #0077bb; /* 将标题改为蓝色 */
+}</style>
+</head>
+<body class="theme theme-white">
+<div id="wmd-preview" class="wmd-preview wmd-preview-full-reader"><div class="md-section-divider"></div><div class="md-section-divider"></div><h1 data-anchor-id="f0ch" id="blog项目数据字典">blog项目数据字典</h1><p data-anchor-id="iva1"><code>数据库</code></p><hr><div class="md-section-divider"></div><h6 data-anchor-id="tanw" id="后台用户表-datauser">后台用户表 <code>data_user</code></h6><table data-anchor-id="597q" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>user_id</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>用户表主键</td>
+</tr>
+<tr>
+ <td>user_name</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td>唯一约束</td>
+ <td>‘’</td>
+ <td>用户名</td>
+</tr>
+<tr>
+ <td>user_pass</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>密码</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="mtvy" id="前台用户表-datahomeuser">前台用户表 <code>data_homeuser</code></h6><table data-anchor-id="62hs" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>user_id</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>前台用户表主键</td>
+</tr>
+<tr>
+ <td>user_name</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td>唯一约束</td>
+ <td>‘’</td>
+ <td>用户名</td>
+</tr>
+<tr>
+ <td>user_pass</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>密码</td>
+</tr>
+<tr>
+ <td>phone</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>电话号码</td>
+</tr>
+<tr>
+ <td>email</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>邮箱</td>
+</tr>
+<tr>
+ <td>token</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>验证用户有效性的标示</td>
+</tr>
+<tr>
+ <td>active</td>
+ <td>tinyint</td>
+ <td>1</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>是否激活 1 激活 0 未激活</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="uwim" id="文章分类表-blogcategory">文章分类表 <code>blog_category</code></h6><table data-anchor-id="sl7a" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>cate_id</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>分类表主键</td>
+</tr>
+<tr>
+ <td>cate_name</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td>唯一约束</td>
+ <td>‘’</td>
+ <td>分类名称</td>
+</tr>
+<tr>
+ <td>cate_title</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>分类别名</td>
+</tr>
+<tr>
+ <td>cate_order</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>排序</td>
+</tr>
+<tr>
+ <td>cate_pid</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>父id</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="4tfh" id="文章表-blogarticle">文章表 <code>blog_article</code></h6><table data-anchor-id="qgf2" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>art_id</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>文章表主键</td>
+</tr>
+<tr>
+ <td>art_title</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td>唯一约束</td>
+ <td>‘’</td>
+ <td>文章标题</td>
+</tr>
+<tr>
+ <td>art_tag</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>文章标签</td>
+</tr>
+<tr>
+ <td>art_description</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>文章描述</td>
+</tr>
+<tr>
+ <td>art_thumb</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>文章缩略图</td>
+</tr>
+<tr>
+ <td>art_content</td>
+ <td>text</td>
+ <td></td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>文章内容</td>
+</tr>
+<tr>
+ <td>art_time</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章发布时间</td>
+</tr>
+<tr>
+ <td>art_editor</td>
+ <td>varchar</td>
+ <td>60</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>文章作者</td>
+</tr>
+<tr>
+ <td>art_view</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章浏览次数</td>
+</tr>
+<tr>
+ <td>cate_id</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章分类id</td>
+</tr>
+<tr>
+ <td>art_status</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章是否加入推荐位</td>
+</tr>
+<tr>
+ <td>art_love</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章点赞数</td>
+</tr>
+<tr>
+ <td>art_collect</td>
+ <td>int</td>
+ <td>10</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章收藏量</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="09kk" id="文章点赞记录表-blogclientip">文章点赞记录表 <code>blog_client_ip</code></h6><table data-anchor-id="zsc6" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>文章点赞记录表</td>
+</tr>
+<tr>
+ <td>art_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>文章ID</td>
+</tr>
+<tr>
+ <td>ip</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>ip</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="f2mv" id="文章收藏表-blogcollect">文章收藏表 <code>blog_collect</code></h6><table data-anchor-id="l6n6" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>文章收藏表</td>
+</tr>
+<tr>
+ <td>art_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>收藏的文章的ID</td>
+</tr>
+<tr>
+ <td>uid</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>收藏人id</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="k9dx" id="文章评论表-blogcomment">文章评论表 <code>blog_comment</code></h6><table data-anchor-id="sorw" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>字段名</th>
+ <th>字段类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>约束</th>
+ <th>默认值</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键</td>
+ <td>Null</td>
+ <td>文章收藏表</td>
+</tr>
+<tr>
+ <td>uid</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>评论人id</td>
+</tr>
+<tr>
+ <td>nickname</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>用户昵称</td>
+</tr>
+<tr>
+ <td>head_pic</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>用户头像</td>
+</tr>
+<tr>
+ <td>content</td>
+ <td>text</td>
+ <td></td>
+ <td>N</td>
+ <td></td>
+ <td>‘’</td>
+ <td>评论内容</td>
+</tr>
+<tr>
+ <td>post_ip</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>0</td>
+ <td>所属文章id</td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="95k7" id="网站配置表-blogconfig">网站配置表 <code>blog_config</code></h6><table data-anchor-id="595t" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>conf_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键索引</td>
+ <td>配置ID</td>
+ <td></td>
+</tr>
+<tr>
+ <td>conf_title</td>
+ <td>varchar</td>
+ <td>50</td>
+ <td>N</td>
+ <td></td>
+ <td>标题</td>
+ <td></td>
+</tr>
+<tr>
+ <td>conf_name</td>
+ <td>varchar</td>
+ <td>50</td>
+ <td>N</td>
+ <td></td>
+ <td>变量名</td>
+ <td></td>
+</tr>
+<tr>
+ <td>conf_content</td>
+ <td>text</td>
+ <td></td>
+ <td>N</td>
+ <td></td>
+ <td>变量值</td>
+ <td></td>
+</tr>
+<tr>
+ <td>conf_order</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>排序</td>
+ <td></td>
+</tr>
+<tr>
+ <td>conf_tips</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>描述</td>
+ <td></td>
+</tr>
+<tr>
+ <td>field_type</td>
+ <td>varchar</td>
+ <td>50</td>
+ <td>N</td>
+ <td></td>
+ <td>字段类型</td>
+ <td></td>
+</tr>
+<tr>
+ <td>field_value</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>类型值</td>
+ <td></td>
+</tr>
+<tr>
+ <td>created_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>N</td>
+ <td></td>
+ <td>添加时间</td>
+ <td></td>
+</tr>
+<tr>
+ <td>updated_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>Y</td>
+ <td></td>
+ <td>修改时间</td>
+ <td></td>
+</tr>
+<tr>
+ <td>delete_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>Y</td>
+ <td></td>
+ <td>删除时间</td>
+ <td></td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="62b0" id="友情链接表-bloglinks">友情链接表 <code>blog_links</code></h6><table data-anchor-id="x0u0" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>link_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键索引</td>
+ <td>友情链接表</td>
+ <td></td>
+</tr>
+<tr>
+ <td>link_name</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>友情链接名</td>
+ <td></td>
+</tr>
+<tr>
+ <td>link_title</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>链接标题</td>
+ <td></td>
+</tr>
+<tr>
+ <td>link_url</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>链接URL</td>
+ <td></td>
+</tr>
+<tr>
+ <td>link_order</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>排序</td>
+ <td></td>
+</tr>
+<tr>
+ <td>created_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>N</td>
+ <td></td>
+ <td>添加时间</td>
+ <td></td>
+</tr>
+<tr>
+ <td>updated_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>N</td>
+ <td></td>
+ <td>修改时间</td>
+ <td></td>
+</tr>
+<tr>
+ <td>delete_at</td>
+ <td>timestamp</td>
+ <td>0</td>
+ <td>Y</td>
+ <td></td>
+ <td>删除时间</td>
+ <td></td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="50pv" id="权限表-blogpermission">权限表 <code>blog_permission</code></h6><table data-anchor-id="52aj" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键索引</td>
+ <td>权限表</td>
+ <td></td>
+</tr>
+<tr>
+ <td>per_name</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>权限名称</td>
+ <td></td>
+</tr>
+<tr>
+ <td>per_url</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>权限对应路由</td>
+ <td></td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="epa0" id="角色权限关联表-blogrolepermission">角色权限关联表 <code>blog_role_permission</code></h6><table data-anchor-id="vkih" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>role_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>角色表在关联表中的外键</td>
+ <td></td>
+</tr>
+<tr>
+ <td>permission_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>权限表在关联表中的外键</td>
+ <td></td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="qh3o" id="角色表-blogrole">角色表 <code>blog_role</code></h6><table data-anchor-id="mtul" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td>主键索引</td>
+ <td>角色表</td>
+ <td></td>
+</tr>
+<tr>
+ <td>role_name</td>
+ <td>varchar</td>
+ <td>255</td>
+ <td>N</td>
+ <td></td>
+ <td>角色名称</td>
+ <td></td>
+</tr>
+</tbody></table><div class="md-section-divider"></div><h6 data-anchor-id="6a3e" id="用户角色关联表-bloguserrole">用户角色关联表 <code>blog_user_role</code></h6><table data-anchor-id="vs2i" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>名称</th>
+ <th>类型</th>
+ <th>长度</th>
+ <th>是否为空</th>
+ <th>索引</th>
+ <th>注释</th>
+ <th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>user_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>用户表在关联表中的外键</td>
+ <td></td>
+</tr>
+<tr>
+ <td>role_id</td>
+ <td>int</td>
+ <td>11</td>
+ <td>N</td>
+ <td></td>
+ <td>角色表在关联表的外键</td>
+ <td></td>
+</tr>
+</tbody></table></div>
+</body>
+</html>
