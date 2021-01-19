@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="layui-fluid">
+    <div class="layui-fluid">   
         <div class="layui-row">
             <form class="layui-form " style="margin-left: 15%;margin-top: 5%;">
                 <input type="hidden" name="uid" value="{{ $user->user_id }}">

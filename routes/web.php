@@ -5,7 +5,7 @@
  * @Author: @周泽钦
  * @Date: 2020-11-09 00:20:15
  * @LastEditors: @周泽钦
- * @LastEditTime: 2020-11-22 16:46:57
+ * @LastEditTime: 2020-12-06 00:58:33
  */
 
 /*
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>['isLogin',
     Route::get('user/del','UserController@delAll');
     Route::get('user/indexAd','UserController@indexAd');
     Route::get('user/createAd','UserController@createAd');
-    Route::resource('user', 'UserController');
+    Route::resource('user', 'UserController');//资源路由
 
 
     //角色模块
@@ -59,6 +59,14 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>['isLogin',
 
     //分类路由
     Route::resource('cate','CateController');
+    //修改排序路由
+    Route::post('cate/changeorder','CateController@changeOrder');
+
+    //文章模块路由
+    //上传路由
+    Route::post('article/upload','ArticleController@upload');
+    Route::resource('article', 'ArticleController');
+
 });
 
 

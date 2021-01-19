@@ -5,7 +5,7 @@
  * @Author: @周泽钦
  * @Date: 2020-11-22 15:59:39
  * @LastEditors: @周泽钦
- * @LastEditTime: 2020-11-22 23:12:31
+ * @LastEditTime: 2020-12-04 16:57:17
  */
 
 namespace App\Http\Controllers\Admin;
@@ -16,6 +16,29 @@ use App\Model\Cate;
 
 class CateController extends Controller
 {
+    //修改文章排序
+    public function changeOrder(Request $request){
+        //1、接收前端传回的数据，改变的排序和cate_id
+        $input = $request->except('_token');
+        //2、通过分类id获取当前分类
+        $cate =Cate::find($input['cate_id']);
+        //3、修改当前分类的排序值
+        $res = $cate->update(['cate_order'=>$input['cate_order']]);
+        if ($res) {
+            $data = [
+                'status'=>0,
+                'message'=>'排序修改成功！'
+            ];
+        } else {
+            $data = [
+                'status'=>1,
+                'message'=>'排序修改失败！'
+            ];
+        }
+        return $data;
+    }
+
+
     /**
      * Display a listing of the resource.
      *

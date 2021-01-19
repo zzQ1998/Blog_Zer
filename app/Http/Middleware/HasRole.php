@@ -5,7 +5,7 @@
  * @Author: @周泽钦
  * @Date: 2020-11-21 15:25:39
  * @LastEditors: @周泽钦
- * @LastEditTime: 2020-11-22 21:02:44
+ * @LastEditTime: 2020-12-05 16:23:25
  */
 
 namespace App\Http\Middleware;
@@ -29,6 +29,7 @@ class HasRole
         //"App\Http\Controllers\Admin\LoginController@index"
         //1、获取当前请求的路由，对应的控制器方法名
         $route = \Route::current()->getActionName();
+        $route=substr($route,0,strpos($route,'@'));
         // dd($route);
         //2、获取当前用户的权限组
         $user = User::find(session()->get('user')->user_id);
@@ -40,7 +41,8 @@ class HasRole
         foreach ($role as $v) {
             $perms = $v->permission;
             foreach ($perms as $p) {
-                $arr_per_url[] = $p->per_url;
+                // $arr_per_url[] = $p->per_url;
+                $arr_per_url[] =substr($p->per_url,0,strpos($p->per_url,'@'));
             }
         }
         //删除重复的权限

@@ -50,7 +50,6 @@
               <div class="layui-input-inline" style="width:35px;">
                 <input onchange="changeOrder(this,{{ $v->cate_id }})" type="text" name="cate_order" value="{{ $v->cate_order }}" class="layui-input">
               </div>
-
             </td>
             <td>{{ $v->cate_id }}</td>
             <td>{{ $v->cate_name }}</td>
@@ -88,19 +87,19 @@
       });
 
 
-      function changeOrder(obj,id){
+      function changeOrder(obj,id){//分类排序输入框，改变之后的方法
 
           // 获取当前文本框的值（修改后的排序值）
           var order_id = $(obj).val();
-
+        //cate_id为文章的id,cate_order为修改后排序的值
           $.post('/admin/cate/changeorder',{'_token':"{{csrf_token()}}","cate_id":id,"cate_order":order_id},function(data){
             // console.log(data);
               if(data.status == 0){
-                  layer.msg(data.msg,{icon:6},function(){
+                  layer.msg(data.message,{icon:6},function(){//成功，刷新页面
                       location.reload();
                   });
               }else{
-                  layer.msg(data.msg,{icon:5});
+                  layer.msg(data.message,{icon:5});
               }
           });
       }
