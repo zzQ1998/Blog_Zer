@@ -46,7 +46,7 @@
             <th>操作</th></tr>
         </thead>
         <tbody>
-        @foreach($article as $v)
+        @foreach($arts as $v)
           <tr>
             {{--<td>--}}
               {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{ $v->user_id }}'><i class="layui-icon">&#xe605;</i></div>--}}

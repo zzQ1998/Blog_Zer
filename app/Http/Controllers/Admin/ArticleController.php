@@ -16,6 +16,7 @@ use App\Model\Cate;
 use App\Model\Article;
 use Image;//引用图片组件
 use Storage;
+use Redis;
 
 class ArticleController extends Controller
 {
@@ -103,8 +104,38 @@ class ArticleController extends Controller
         //获取文章列表对象
         // $article =Article::get();
 
+        //定义一个变量，存放着所有的文章记录；
+        $arts =[];
+
+        $listkey = 'LIST:ARTICLE';//用来存放需要获取文章的id值
+        $hashkey = 'HASH:ARTICLE';//用来存放文章
+
+        if (Redis::exists($listkey)) {
+            //如果Redis中存在要取的数据，就直接返回
+            //$lists中存放着所有要获取文章的id
+            $lists = Redis::lrange($listkey,0,-1);//利用lrange类获取列表
+
+            foreach ($lists as $k => $v) {
+                $arts[] = Redis::hgetall($hashkey.$v);//每次取出一篇文章
+            }
+
+        } else {
+            //1、如果redis中没有，连接mysql数据库，取出需要的数据
+            $arts = Article::get()->toArray();
+            //2、存入redis中
+            foreach ($arts as $k => $v) {
+                //将文章的id添加到listkey变量中
+                Redis::rpush($listkey,$v['art_id']);
+                //将文章添加到hashkey变量中
+                Redis::hmset($hashkey.$v['art_id'],$v);
+            }
+            //3、并将数据返回给客户端
+        }
+
+
+
         //返回一个添加页面
-        return view('admin.article.list',compact('article'));
+        return view('admin.article.list',compact('arts'));
     }
 
     /**
