@@ -81,6 +81,27 @@
             </li>
             <li>
                 <a href="javascript:;">
+                    <i class="iconfont">&#xe75f;</i>
+                        <cite>网站配置管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('添加网站配置','{{ url('admin/config/create') }}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加网站配置</cite>
+                        </a>
+                    </li >
+                    <li>
+                        <a onclick="xadmin.add_tab('网站配置列表','{{ url('admin/config') }}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>网站配置列表</cite>
+                        </a>
+                    </li >
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="城市联动">&#xe723;</i>
                     <cite>城市联动</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>

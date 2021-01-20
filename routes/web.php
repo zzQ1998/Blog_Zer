@@ -67,6 +67,12 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>['isLogin',
     Route::post('article/upload','ArticleController@upload');
     Route::resource('article', 'ArticleController');
 
+
+    //网站配置模块路由
+    Route::post('config/changecontent','ConfigController@changeContent');
+    Route::get('config/putcontent','ConfigController@putContent');
+    Route::resource('config','ConfigController');
+
 });
 
 
