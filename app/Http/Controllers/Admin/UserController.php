@@ -15,6 +15,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use App\Model\User;
 use App\Model\Role;
+use Mail;
+use Image;//引用图片组件
+use Storage;
+use Redis;
 
 class UserController extends Controller
 {
@@ -40,8 +44,12 @@ class UserController extends Controller
             })
             ->paginate($request->input('num')!=0?$request->input('num'):6);//每次查询的数据条数
 
+            $allRole = \DB::select('select * from pharmacy_user_role');//获得 blog_user_role表对象
+            // dd($allRole);
+            $role = Role::get();
         // $user = User::get();
-        return view('admin.user.list',compact('user','request'));//返回列表页面，并携带user
+        // dd($request->all());
+        return view('admin.user.list',compact('user','request','allRole','role'));//返回列表页面，并携带user
     }
 
     public function indexAd(Request $request)
@@ -57,7 +65,7 @@ class UserController extends Controller
             })
             ->paginate($request->input('num')!=0?$request->input('num'):6);//每次查询的数据条数
 
-            $allRole = \DB::select('select * from blog_user_role');//获得 blog_user_role表对象
+            $allRole = \DB::select('select * from pharmacy_user_role');//获得 blog_user_role表对象
             // dd($allRole);
             $role = Role::get();
         // $user = User::get();
@@ -108,22 +116,53 @@ class UserController extends Controller
         $userrname=$input['userrname'];
         $pass=Crypt::encrypt($input['pass']);
         $email = $input['email'];
+        $token = md5($input['email'].$input['pass'].'123');
+        $expire = time()+3600*24;//如果这封邮件一天以内没有被激活，就失效了
         $phone = $input['phone'];
         $limit = $input['limit'];
-        $res = User::create(['user_name'=>$username,'user_pass'=>$pass,'user_rname'=>$userrname,'email'=>$email,'phone'=>$phone,'limit'=>$limit]);
+        $res = User::create(['user_name'=>$username,'user_pass'=>$pass,'user_rname'=>$userrname,'email'=>$email,'phone'=>$phone,'limit'=>$limit,'token'=>$token,'expire'=>$expire]);
+
         //4、根据添加是否成功，给客户端返回一个json格式的反馈
-        if($res){
+        if($res){//如果用户数据添加成功
+            Mail::send('email.active', ['user'=>$res], function ($m) use ($res) {
+                $m->to($res->email, $res->user_rname)->subject('账号激活邮箱');//这是一个邮件发送给谁的方法
+            });
+
             $data = [
                 'status' =>0,
-                'message' =>'添加成功!'
+                'message' =>'员工账号添加成功!请通知员工在邮箱内激活账号。'
             ];
         }else{
             $data = [
                 'status' => 1,
-                'message' => '添加失败!'
+                'message' => '员工账号添加失败!'
             ];
         }
         return $data;
+    }
+
+    //添加员工账号邮箱激活
+    public function active(Request $request){
+        //找到要激活的用户，将用户的active字段改成1
+
+        $user = User::findOrFail($request->userid);
+
+        //验证token的有效性，保证链接是通过邮箱中的激活链接发送的
+        if($request->token  != $user->token){
+            return '当前链接非有效链接，请确保您是通过邮箱的激活链接来激活的';
+        }
+        //激活时间是否已经超时
+        if(time() > $user->expire){
+            return '激活链接已经超时，请重新注册';
+        }
+
+        $res = $user->update(['active'=>1]);
+        //激活成功，跳转到登录页
+        if($res){
+            return redirect('admin/login')->with('errors','账号激活成功，可以进行登录啦!');
+        }else{
+            return '邮箱激活失败，请检查激活链接，或者联系管理员';
+        }
     }
 
     /**
@@ -194,37 +233,84 @@ class UserController extends Controller
         }else {
             $user->user_pass = Crypt::encrypt($input['newpass']);
         }
-        \DB::beginTransaction();
+        \DB::beginTransaction();//事务开启
         try{
             //3、进行修改
             $res =$user->save();
-            //如果是管理员在bolg_user_role表修改数据
-            if($input['limit']==1){
-                //先删除当前角色已有的权限
-                \DB::table('blog_user_role')->where('user_id',$input['uid'])->delete();
-                //再给表添加新授予的权限
-                if(!empty($input['role_id'])){
-                    foreach ($input['role_id'] as $value) {
-                        \DB::table('blog_user_role')->insert(['user_id'=>$input['uid'],'role_id'=>$value]);
+            //如果是管理员在pharmacy_user_role表修改数据
+            if($sign_E==1){
+                if ($user->status==1) {
+                    //先删除当前角色已有的权限
+                    \DB::table('pharmacy_user_role')->where('user_id', $input['uid'])->delete();
+                    //再给表添加新授予的权限
+                    if (!empty($input['role_id'])) {
+                        foreach ($input['role_id'] as $value) {
+                            \DB::table('pharmacy_user_role')->insert(['user_id'=>$input['uid'],'role_id'=>$value]);
+                        }
                     }
+                }else{
+                    throw new \Exception("2");
                 }
             }
             \DB::commit();
             $a=1;
         }catch(\Exception $e){
             \DB::rollBack();
-            $a=0;
+            // return $e->getMessage();
+            if($e->getMessage()==2){
+                $a=2;
+            }else{
+                $a=0;
+            }
+
         }
-        if ($res&&$a=1) {
+        if ($res&&$a==1) {
             $data = [
                 'status'=>0,
                 'message'=>'信息修改成功!'
             ];
-        } else {
+        }else {
+            if($a==2){
+                $data = [
+                    'status'=>1,
+                    'message'=>'请将账号状态改为启用!'
+                ];
+            }else{
+                $data = [
+                    'status'=>1,
+                    'message'=>'信息修改失败!'
+                ];
+            }
+
+        }
+        return $data;
+    }
+
+    public function updateByuser(Request $request)
+    {
+        //1、根据id获取要修改的对象
+        $user = User::find($request->input('uid'));
+        // dd($user);
+        //2、获取前端表单里的数据
+        $input =$request->all();
+        //根据标识进行分类处理
+        $user->user_rname = $input['userrname'];
+        $user->email = $input['email'];
+        $user->phone = $input['phone'];
+        $user->resume = $input['resume'];
+         //3、进行修改
+        $res =$user->save();
+        //4、返回信息
+        if ($res) {
             $data = [
-                'status'=>1,
-                'message'=>'信息修改失败!'
+                'status'=>0,
+                'message'=>'个人信息修改成功!'
             ];
+        }else {
+                $data = [
+                    'status'=>1,
+                    'message'=>'个人信息修改失败!'
+                ];
         }
         return $data;
     }
@@ -273,5 +359,75 @@ class UserController extends Controller
             ];
         }
         return $data;
+    }
+
+    //跳转到个人信息界面
+    public function message(){
+        $user_id = session('user')->user_id;
+        $user = User::find($user_id);
+        $user_Message = $user->toArray();//将$user集合转成数组
+        $res = array();
+        //将需要计算进度条字段，重新放到一个新数组中
+        $res[0] = $user_Message['user_name'];
+        $res[1] = $user_Message['user_rname'];
+        $res[2] = $user_Message['img'];
+        $res[3] = $user_Message['phone'];
+        $res[4] = $user_Message['email'];
+        $res[5] = $user_Message['user_pass'];
+        $res[6] = $user_Message['resume'];
+        //将过滤为空后数组个数除以原数组个数*100，在向上取整；
+        $num = ceil(count(array_filter($res))/count($res)*100);
+
+        return view('admin.user.message',compact('user','num'));
+    }
+
+    //修改头像操作
+    public function uploadImg(Request $request){
+        // dd($request->input('uid'));
+        // dd($request->all());
+        //获取上传的图片
+        $file =$request->file('photo');
+        // return $file;
+        //判断上传 文件/图片 是否成功（是否有效）
+        if (!$file->isValid()) {
+            return response()->json([
+                'ServerNo'=>'400',
+                'ResultData'=>'无效的上传 文件/图片 '
+            ]);
+        }
+        //获取原 文件/图片 的拓展名
+        $ext = $file->getClientOriginalExtension();// 文件/图片 拓展名
+        //重写新 文件/图片 名
+        $newfileName = md5(time().rand(1000,9999)).'.'.$ext;
+
+        // 文件/图片 上传的指定路径
+        $path =public_path('uploads');
+
+        //1.获取图片并设置图像大小(这里控制图像为原图的30%)；
+        $img = Image::make($file);
+        $imageWidth = $img->width()*0.3;
+        $imageHeight = $img->height()*0.3;
+        $img->resize($imageWidth, $imageHeight);
+
+        //2.将文件上传到七牛云存储的指定仓库,并更新数据库(问：这里可以用事务吗)
+        $res = Storage::disk('qiniu')->put($newfileName, $img->encode());
+        if($res){
+            $user = User::find($request->input('uid'));
+            $res_img = $user->update(['img'=>env('QINIU_DOMAIN').$newfileName]);
+        }
+
+        //判断 文件/图片 是否上传成功，如果成功则返回“ 文件/图片 上传成功”
+        if (!$res) {
+            return response()->json([
+                'ServerNo'=>'400',
+                'ResultData'=>'文件上传失败！'
+            ]);
+        } else {
+            return response()->json([
+                'ServerNo'=>'200',
+                'ResultData'=>env('QINIU_DOMAIN').$newfileName//返回图片保存路径
+            ]);
+        }
+
     }
 }

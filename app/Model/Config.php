@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Config extends Model
 {
     //1、用户模型关联数据表
-    public $table = 'blog_config';
+    public $table = 'pharmacy_config';
     //2、关联表的主键
     public $primaryKey = 'conf_id';
     //3、允许被批量操作的字段

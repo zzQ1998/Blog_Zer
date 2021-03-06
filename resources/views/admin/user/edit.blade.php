@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="layui-fluid">   
+    <div class="layui-fluid">
         <div class="layui-row">
             <form class="layui-form " style="margin-left: 15%;margin-top: 5%;">
                 <input type="hidden" name="uid" value="{{ $user->user_id }}">
@@ -33,7 +33,7 @@
                         <input type="text" id="L_userrname" name="userrname" value="{{ $user->user_rname }}" required="" lay-verify="required|rname" autocomplete="off" class="layui-input" placeholder="真实姓名"></div>
                 </div>
                 {{--  选择角色  --}}
-                @if ($user->limit==1)
+                {{--  @if ($user->limit==1)  --}}
                 <div class="layui-form-item">
                     <label class="layui-form-label"><span class="x-red">*</span>选择角色</label>
                     <div class="layui-input-block">
@@ -46,7 +46,7 @@
                         @endforeach
                     </div>
                 </div>
-                @endif
+                {{--  @endif  --}}
 
 
                 {{--  //输入邮箱  --}}
@@ -99,6 +99,8 @@
                                 if(data.status==0){
                                     layer.alert(data.message,{icon:6},function(){
                                         parent.location.reload(true);//刷新父页面
+                                        //parent.layui.table.reload('userlist');//刷新表格
+                                        //xadmin.close();
                                     });
                                 }else{
                                     layer.alert(data.message,{icon:5});

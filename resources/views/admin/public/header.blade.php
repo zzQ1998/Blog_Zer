@@ -1,7 +1,7 @@
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a href="/">Blog_Zer</a></div>
+        <a href="/">{{ config('webconfig.web_title') }}</a></div>
     <div class="left_open">
         <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
     </div>
@@ -34,20 +34,30 @@
         </li>
     </ul>
     <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <a href="javascript:;" layadmin-event="note">
+                <i class="iconfont">&#xe828;</i>
+                浙江- 杭州
+            </a>
+        </li>
         <li class="layui-nav-item">
             <a href="javascript:;">{{Session::get('user')->user_rname}}</a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd>
-                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>
+                    <a onclick="xadmin.add_tab('个人信息','{{ url('admin/user/message') }}')">
+                    {{--  <a onclick="xadmin.open('个人信息','{{ url('admin/user/message') }}')">--}}
+                    个人信息</a>
+                </dd>
                 <dd>
-                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+                    <a onclick="xadmin.open('切换帐号','{{ url('admin/user/message') }}')">切换帐号</a></dd>
                 <dd>
                     <a href="{{ url('admin/logout') }}">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index">
-            <a href="/">前台首页{{ Session::get('user_name')}}</a></li>
+            <a href="/">前台首页</a>
+        </li>
     </ul>
 </div>
 <!-- 顶部结束 -->

@@ -23,7 +23,7 @@
           <cite>导航元素</cite></a>
       </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
     </div>
     <div class="x-body">
       <xblock>
@@ -57,7 +57,7 @@
 
             <td class="td-manage">
 
-              <a title="编辑"  onclick="x_admin_show('编辑','{{ url('admin/cate/'.$v->cate_id.'/edit') }}',600,400)" href="javascript:;">
+              <a title="编辑"  onclick="xadmin.open('药品类别编辑','{{ url('admin/cate/'.$v->cate_id.'/edit') }}',600,400)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
 

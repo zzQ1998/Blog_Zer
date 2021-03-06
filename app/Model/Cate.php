@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cate extends Model
 {
     //1、用户模型关联数据表
-    public $table = 'blog_category';
+    public $table = 'pharmacy_category';
     //2、关联表的主键
     public $primaryKey = 'cate_id';
     //3、允许被批量操作的字段
@@ -56,5 +56,9 @@ class Cate extends Model
             }
         }
         return $arr;
+    }
+    //定义跟药品表的关联属性,一对多
+    public function medicines(){
+        return $this->hasMany('App\Model\Medicines','cate_id','cate_id');
     }
 }

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     //1、用户模型关联数据表
-    public $table = 'blog_role';
+    public $table = 'pharmacy_role';
 
     //2、关联表的主键
     public $primaryKey = 'id';
@@ -29,10 +29,10 @@ class Role extends Model
     //4、禁用一下模型的时间戳，是否维护crated_at和update_at字段
     public $timestamps =false;
 
-    //添加动态属性，关联权限模型
+    //添加动态属性，关联权限模型，多对多
     public function permission()
     {
-        return $this->belongsToMany('App\Model\Permission', 'blog_role_permission', 'role_id', 'permission_id');
+        return $this->belongsToMany('App\Model\Permission', 'pharmacy_role_permission', 'role_id', 'permission_id');
     }
 
 }

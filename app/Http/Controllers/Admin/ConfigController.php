@@ -17,6 +17,7 @@ class ConfigController extends Controller
 //        dd($content);
 //        2. 准备要写入的内容
 
+//var_export() 函数返回关于传递给该函数的变量的结构信息，它和 var_dump() 类似，不同的是其返回的是一个合法的 PHP 代码。
         $str = '<?php return '.var_export($content,true).';';
 
 //        3. 将内容写入webconfig.php文件
@@ -39,7 +40,7 @@ class ConfigController extends Controller
                 //1. 文本框 input
 //                aaaa =>   <input value="aaa" type="text" name="title"  class="layui-input">
                 case 'input':
-                   $v->conf_contents = '<input value="'.$v->conf_content.'" type="text" name="conf_content[]"  class="layui-input">';
+                    $v->conf_contents = '<input value="'.$v->conf_content.'" type="text" name="conf_content[]"  class="layui-input">';
 
                     break;
                 //2 文本域 textarea
@@ -83,7 +84,7 @@ class ConfigController extends Controller
 
             }
         }
-
+        $this->putContent();
        return view('admin.config.list',compact('conf'));
     }
 
@@ -184,24 +185,26 @@ class ConfigController extends Controller
     public function changeContent(Request $request)
     {
         $input = $request->except('_token');
-//        dd($input);
-
+    //    dd($input);
+    //    exit;
+        //开启事务，因为批量修改数据，所以需要用到事务
         DB::beginTransaction();
 
         try{
             foreach ($input['conf_id'] as $k=>$v){
-                DB::table('config')->where('conf_id',$v)->
+                //在config表中找到config_id对应的id值，执行conf_content字段更新操作，值为$input['conf_content'][$k]
+                DB::table('pharmacy_config')->where('conf_id',$v)->
                     update(['conf_content'=>$input['conf_content'][$k]]);
             }
 
             DB::commit();
-            $this->putContent();
+            $this->putContent();////将网站配置数据表中的网站配置数据写入config/webconfig.php文件中
             return redirect('/admin/config');
 
-        }catch (\Exception $e){
-            DB::rollBack();
+        }catch (\Exception $e){//异常
+            DB::rollBack();//回滚
             return redirect()->back()
-                ->withErrors(['error'=>$e->getMessage()]);
+                ->withErrors(['error'=>$e->getMessage()]);//返回错误信息
         }
     }
 }

@@ -50,19 +50,24 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe723;</i>
-                    <cite>文章管理</cite>
+                    <i class="iconfont left-nav-li" lay-tips="药品管理">&#xe723;</i>
+                    <cite>药品管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('文章列表','{{ url('admin/article') }}')">
+                        <a onclick="xadmin.add_tab('药品列表','{{ url('admin/medicines') }}')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>文章列表</cite></a>
+                            <cite>药品列表</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('订单列表1','order-list1.html')">
+                        <a onclick="xadmin.add_tab('删除列表','{{ url('admin/medicines/indexDel') }}')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>订单列表1</cite></a>
+                            <cite>删除列表</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('药品类别','{{ url('admin/cate') }}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>药品类别</cite></a>
                     </li>
                 </ul>
             </li>
@@ -130,12 +135,7 @@
                             <cite>角色管理</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('权限分类','admin-cate.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('权限管理','admin-rule.html')">
+                        <a onclick="xadmin.add_tab('权限管理','{{ url('admin/permission') }}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>权限管理</cite></a>
                     </li>

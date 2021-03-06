@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     //1、用户模型关联数据表
-    public $table = 'blog_permission';
+    public $table = 'pharmacy_permission';
     //2、关联表的主键
     public $primaryKey = 'id';
     //3、允许被批量操作的字段

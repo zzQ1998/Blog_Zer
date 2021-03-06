@@ -78,7 +78,7 @@
                         描述
                     </label>
                     <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea"></textarea>
+                        <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea" >{{ $role->role_describe }}</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item" style="margin-left: 45%">

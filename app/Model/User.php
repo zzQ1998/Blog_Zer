@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     //1、用户模型关联数据表
-    public $table = 'blog_user';
+    public $table = 'pharmacy_user';
 
     //2、关联表的主键
     public $primaryKey = 'user_id';
@@ -27,10 +27,11 @@ class User extends Model
 
     //4、禁用一下模型的时间戳，是否维护crated_at和update_at字段
     public $timestamps =false;
+
         //添加动态属性，关联权限模型
     public function role()
     {
-        return $this->belongsToMany('App\Model\Role', 'blog_user_role','user_id','role_id');
+        return $this->belongsToMany('App\Model\Role', 'pharmacy_user_role','user_id','role_id');
     }
 
 }

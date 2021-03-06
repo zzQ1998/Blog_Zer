@@ -35,11 +35,11 @@
             <div class="layui-col-md12">
                 <div class="layui-card" >
                     <div class="layui-card-body ">
-                        <form class="layui-form layui-col-space6" style="margin-left: 19%" method="get" action="{{ url('admin/user') }}">
+                        <form class="layui-form layui-col-space6" name="sreach"  id="sreach" style="margin-left: 19%" method="get" action="{{ url('admin/user') }}">
                             {{--  选择表单  --}}
                             <div class="layui-inline layui-show-xs-block layui-form-item" style="margin-top: 2.5%">
                                 <div class="layui-input-block">
-                                    <select name="num" lay-verify="required">
+                                    <select name="num" lay-verify="required" lay-filter="brickType">
                                     <option value="0" @if ($request->input('num')==0) selected @endif>请选择每页条数</option>
                                     <option value="3" @if ($request->input('num')==3) selected @endif>3</option>
                                     <option value="6" @if ($request->input('num')==6) selected @endif>6</option>
@@ -78,9 +78,10 @@
                                     <th style="text-align: center; font-weight:bold;">编号</th>
                                     <th style="text-align: center; font-weight:bold;">用户名</th>
                                     <th style="text-align: center; font-weight:bold;">真实姓名</th>
-                                    <th style="text-align: center; font-weight:bold;">密码</th>
+                                    {{--  <th style="text-align: center; font-weight:bold;">密码</th>  --}}
                                     <th style="text-align: center; font-weight:bold;">邮箱</th>
-                                    <th style="text-align: center; font-weight:bold;">手机</th>
+                                    <th style="text-align: center; font-weight:bold;">角色</th>
+                                    <th style="text-align: center; font-weight:bold;">账号激活</th>
                                     <th style="text-align: center; font-weight:bold;">账号状态</th>
                                     <th style="text-align: center; font-weight:bold;">操作</th>
                                 </tr>
@@ -90,14 +91,32 @@
                                 @foreach ($user as $u)
                                 <tr class="user">
                                     <td>
-                                        <input type="checkbox" name="id" value="1" lay-skin="primary" data-id="{{ $u->user_id }}">
+                                        {{--  <input type="checkbox" name="id" value="1" lay-skin="primary" data-id="{{ $u->user_id }}">  --}}
+                                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="{{ $u->user_id }}"><i class="layui-icon layui-icon-ok"></i></div>
                                     </td>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $u->user_name }}</td>
                                     <td>{{ $u->user_rname }}</td>
-                                    <td title="{{ $u->user_pass }}">{{ str_limit($u->user_pass,18,'......') }}</td>
+                                    {{--  <td title="{{ $u->user_pass }}">{{ str_limit($u->user_pass,18,'......') }}</td>  --}}
                                     <td>{{ $u->email }}</td>
-                                    <td>{{ $u->phone }}</td>
+                                    <td style="font-weight: bold">
+                                        @foreach ($allRole as $ar)
+                                            @if ($ar->user_id==$u->user_id)
+                                                @foreach ($role as $a)
+                                                    @if ($ar->role_id==$a->id)
+                                                        {{ '"'.$a->role_name.'"' }}
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td class="td-status">
+                                        @if ($u->active==1)
+                                            <span class="layui-btn layui-btn-normal layui-btn-mini">已激活</span>
+                                        @else
+                                            <span class="layui-btn layui-btn-warm layui-btn-mini">未激活</span>
+                                        @endif
+                                    </td>
                                     <td class="td-status">
                                         @if ($u->status==1)
                                             <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
@@ -116,7 +135,7 @@
                                         </a>
                                         @endif
 
-                                        <a title="编辑" onclick="xadmin.open('编辑','{{ url('admin/user/'.$u->user_id.'1/edit') }}',600,400)" href="javascript:;">
+                                        <a title="编辑/授权" onclick="xadmin.open('编辑/授权','{{ url('admin/user/'.$u->user_id.'1/edit') }}',600,400)" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <a onclick="xadmin.open('修改密码','{{ url('admin/user/'.$u->user_id.'2/edit') }}',600,400)" title="修改密码" href="javascript:;">
@@ -144,25 +163,31 @@
             </div>
         </div>
     </div>
+
+
+
+
 </body>
 <script>
-    layui.use(['laydate', 'form'], function() {
+    layui.use(['form'], function() {
         var laydate = layui.laydate;
         var form = layui.form;
-
-
         // 监听全选
         form.on('checkbox(checkall)', function(data) {
-
             if (data.elem.checked) {
-                $('tbody input').prop('checked', true);
-            } else {
-                $('tbody input').prop('checked', false);
+                $('.layui-form-checkbox').addClass('layui-form-checked');
+            }else{
+                $('.layui-form-checkbox').removeClass('layui-form-checked');
             }
-            form.render('checkbox');
+            form.render('checkbox');//重新渲染
         });
 
-        //执行一个laydate实例
+        form.on('select(brickType)', function(data){//选择框监听事件
+            document.sreach.action ="{{ url('admin/user') }}";
+            $('#sreach').submit();
+        });
+
+        {{--  //执行一个laydate实例
         laydate.render({
             elem: '#start' //指定元素
         });
@@ -170,7 +195,7 @@
         //执行一个laydate实例
         laydate.render({
             elem: '#end' //指定元素
-        });
+        });  --}}
 
 
     });
@@ -198,7 +223,7 @@
                     //弹层提示添加成功，并刷新父页面
                     if(data.status==0){
                         layer.alert(data.message,{icon:6},function(){
-                            parent.location.reload(true);//刷新父页面
+                            location.reload(true);//刷新本页面
 
                         });
                     }else{
@@ -235,12 +260,10 @@
         var ids = [];
 
         // 获取选中的id
-        $(".layui-form-checked").not('.header').each(function(i,v) {
+        $("tbody .layui-form-checked").not('.header').each(function(i,v) {
             var u = $(v).attr("data-id");
-            alert("12:"+u);
             ids.push(u);
         });
-        alert(ids);
         layer.confirm('确认要删除选中的数据吗？', function(index) {
             //ajax 的post传输
             $.get('/admin/user/del',{'ids':ids},function(data){
@@ -258,6 +281,16 @@
 
         });
     }
+    $(function () {//单选框点击事件
+        $(".layui-form-checkbox").click(function(){
+            if($(this).hasClass("layui-form-checked")){
+                $(this).removeClass("layui-form-checked");
+            }else{
+                $(this).addClass("layui-form-checked");
+            }
+
+        });
+    });
 </script>
 
 </html>

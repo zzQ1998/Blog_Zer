@@ -120,7 +120,10 @@ class CateController extends Controller
      */
     public function edit($id)
     {
-        //
+        //根据id查找类别
+        $cate = Cate::find($id);
+        // dd($cate->cate_id);
+        return view('admin.cate.edit',compact('cate'));
     }
 
     /**

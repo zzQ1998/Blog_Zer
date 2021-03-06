@@ -44,7 +44,7 @@
                         @endforeach
                     </div>
                 </div>  --}}
-                
+
                 {{--  //输入邮箱  --}}
                 <div class="layui-form-item">
                     <label for="L_email" class="layui-form-label">
@@ -77,7 +77,7 @@
 
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label"></label>
-                    <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div>
+                    <button class="layui-btn" lay-filter="add" lay-submit="">添加账号</button></div>
             </form>
         </div>
     </div>

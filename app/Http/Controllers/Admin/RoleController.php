@@ -24,16 +24,17 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //1、获得数据对象
-        $role= Role::get();
-        //
+        // $role= Role::get();
+        $role = Role::OrderBy('id','asc')
+        ->paginate($request->input('num')!=0?$request->input('num'):6);//每次查询的数据条数
+
+        $allPermission = \DB::select('select * from pharmacy_role_permission');
+        $permission = Permission::get();
         //2、返回到角色列表页面
-
-        return view('admin.role.list',compact('role'));
-
-        // return view('admin.role.list');
+        return view('admin.role.list',compact('role','request','allPermission','permission'));
 
     }
 
@@ -135,29 +136,36 @@ class RoleController extends Controller
     {
             $input = $request->all();
             // dd( $input);
+            \DB::beginTransaction();//事务开启
+        try{
             //先删除当前角色已有的权限
-            \DB::table('blog_role_permission')->where('role_id',$input['role_id'])->delete();
+            \DB::table('pharmacy_role_permission')->where('role_id',$input['role_id'])->delete();
             //再给表添加新授予的权限
-            $a=0;
+
             if(!empty($input['permission_id'])){
                 foreach ($input['permission_id'] as $value) {
-                        $res=\DB::table('blog_role_permission')->insert(['role_id'=>$input['role_id'],'permission_id'=>$value]);
-                        if(!$res){
-                            $a=1;
-                        }
+                    \DB::table('pharmacy_role_permission')->insert(['role_id'=>$input['role_id'],'permission_id'=>$value]);
                 }
             }
-        if($a==1){
-            $data = [
-                'status'=>1,
-                'message'=>'信息修改失败!'
-            ];
-        }else{
-            $data = [
-                'status'=>0,
-                'message'=>'信息修改成功!'
-            ];
+            $role = Role::find($input['role_id']);
+            $role->update(['role_name'=>$input['name'],'role_describe'=>$input['desc']]);
+            \DB::commit();
+            $a=0;
+        }catch(\Exception $e){
+            \DB::rollBack();
+            $a=1;
         }
+            if($a==1){
+                $data = [
+                    'status'=>1,
+                    'message'=>'信息修改失败!'
+                ];
+            }else{
+                $data = [
+                    'status'=>0,
+                    'message'=>'信息修改成功!'
+                ];
+            }
         return $data;
     }
 
@@ -169,6 +177,22 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //1、根据id获取数据库对象
+        $role = Role::find($id);
+        //2、进行删除对象
+        $res = $role->delete();
+        //3、进行判断返回数据
+        if($res){
+            $data = [
+                'status'=>0,
+                'message'=>'角色删除成功!'
+            ];
+        }else{
+            $data = [
+                'status'=>1,
+                'message'=>'角色删除失败!'
+            ];
+        }
+        return $data;
     }
 }

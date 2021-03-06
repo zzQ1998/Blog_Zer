@@ -126,7 +126,7 @@
                                         </a>
                                         @endif
 
-                                        <a title="编辑/授权" onclick="xadmin.open('编辑','{{ url('admin/user/'.$u->user_id.'1/edit') }}',600,400)" href="javascript:;">
+                                        <a title="编辑/授权" onclick="xadmin.open('编辑/授权','{{ url('admin/user/'.$u->user_id.'1/edit') }}',600,400)" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <a onclick="xadmin.open('修改密码','{{ url('admin/user/'.$u->user_id.'2/edit') }}',600,400)" title="修改密码" href="javascript:;">

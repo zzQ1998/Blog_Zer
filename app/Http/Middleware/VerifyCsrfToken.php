@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        //跳过collect路由的CsrfToken
+        'collect'
     ];
 }
